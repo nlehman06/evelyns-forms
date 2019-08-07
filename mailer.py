@@ -6,13 +6,12 @@ import boto3
 from botocore.exceptions import ClientError
 
 SENDER = "Nathan Lehman <nathan@nlehman.dev>"
-# RECIPIENTS = ["nathan@nlehman.dev", "ancote@gmail.com"]
-RECIPIENTS = ["nathan@nlehman.dev"]
+RECIPIENTS = ["nathan@nlehman.dev", "ancote@gmail.com"]
 AWS_REGION = "us-east-1"
 CHARSET = "UTF-8"
 
 
-def send_email(current_date, attachment_list, rm_list, tc_list):
+def send_email(current_date, attachment_list, rm_list, tc_list, tantrum_graph):
     subject = current_date + " Evelyn's daily ABA therapy"
     body_text = "Forms for " + current_date + " for Evelyn are attached"
     body_html = f"""<html>
@@ -68,6 +67,12 @@ def send_email(current_date, attachment_list, rm_list, tc_list):
         os.remove(attachment['tmp_name'])
         # Add the attachment to the parent container.
         msg.attach(att)
+
+    if tantrum_graph:
+        att_t = MIMEApplication(open(tantrum_graph, 'rb').read())
+        att_t.add_header('Content-Disposition', 'attachment', filename='tantrum.png')
+        os.remove(tantrum_graph)
+        msg.attach(att_t)
 
     # Attach the multipart/alternative child container to the multipart/mixed
     # parent container.

@@ -27,7 +27,7 @@ class ChromeBrowser:
         self.br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
 
         self.br.addheaders = [('User-agent',
-                          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36')]
+                               'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36')]
 
     def log_in(self):
         self.br.open("https://datafinch.com/")
@@ -98,3 +98,7 @@ class ChromeBrowser:
                     })
                 # os.remove(filename)
         return attachment_list
+
+    def get_tantrum_graph(self):
+        (tantrum_graph, headers) = self.br.retrieve('https://secure.datafinch.com/Charting/BehaviorChart?targetId=undefined&programId=undefined&studentCaseId=05cc52ae-4d6d-4b6c-be02-91480aaca0da&behaviorId=f4960f1a-5c53-4d93-b066-a870001522b1&stepId=&splitByTherapist=false&scatterRange24=undefined&showValueAtPoint=false&showTrialCount=undefined&showTherapistCount=undefined&showAverage=false&chartRange=M1&hideConditionLines=false&overlayIOA=undefined&hideNotes=false&sma=false&stdev=false&trend=false&interval=D&save=false&pdf=false&graphKind=undefined&startDate=&yAxisValue=0&mergeData=false&splitAmPm=undefined&endDate=&graphMode=TotalDuration&excludeLowTrials=undefined&firstTrials=undefined&excludeMaintenance=undefined&apaStyle=false&mergeWithABC=false&TimeStamp=8066')
+        return tantrum_graph
