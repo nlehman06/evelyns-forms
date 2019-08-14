@@ -9,9 +9,8 @@ def run_email(event, context):
         'nathan@nlehman.dev',
         'ancote@gmail.com'
     ]
-    if 'queryStringParameters' in event:
-        if 'recipients' in event['queryStringParameters']:
-            recipients = ast.literal_eval(event['queryStringParameters']['recipients'])
+    if 'queryStringParameters' in event and 'recipients' in event['queryStringParameters']:
+        recipients = ast.literal_eval(event['queryStringParameters']['recipients'])
     datetime_object = get_date(event)
     current_date = '{d.month}/{d.day}/{d.year}'.format(d=datetime_object)
 
