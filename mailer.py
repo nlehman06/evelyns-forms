@@ -6,12 +6,11 @@ import boto3
 from botocore.exceptions import ClientError
 
 SENDER = "Nathan Lehman <nathan@nlehman.dev>"
-RECIPIENTS = ["nathan@nlehman.dev", "ancote@gmail.com"]
 AWS_REGION = "us-east-1"
 CHARSET = "UTF-8"
 
 
-def send_email(current_date, attachment_list, rm_list, tc_list, tantrum_graph):
+def send_email(current_date, recipients, attachment_list, rm_list, tc_list, tantrum_graph):
     subject = current_date + " Evelyn's daily ABA therapy"
     body_text = "Forms for " + current_date + " for Evelyn are attached"
     body_html = f"""<html>
@@ -43,7 +42,7 @@ def send_email(current_date, attachment_list, rm_list, tc_list, tantrum_graph):
     # Add subject, from and to lines.
     msg['Subject'] = subject
     msg['From'] = SENDER
-    msg['To'] = ', '.join(RECIPIENTS)
+    msg['To'] = ', '.join(recipients)
 
     # Create a multipart/alternative child container.
     msg_body = MIMEMultipart('alternative')
@@ -81,7 +80,7 @@ def send_email(current_date, attachment_list, rm_list, tc_list, tantrum_graph):
     try:
         response = client.send_raw_email(
             Source=SENDER,
-            Destinations=RECIPIENTS,
+            Destinations=recipients,
             RawMessage={
                 'Data': msg.as_string(),
             },
