@@ -5,6 +5,11 @@ from mailer import send_email
 
 
 def run_email(event, context):
+    student = event['key'] if 'key' in event else 'Lehman, Hayes'
+    case = event['case'] if 'case' in event else '0a608d99-9484-4333-a735-29179e1e1ef5'
+    student_parsed = student.split(', ')
+    student_name = student_parsed[1] + ' ' + student_parsed[0]
+    print(student_name)
     recipients = [
         'nathan@nlehman.dev',
         'ancote@gmail.com'
@@ -18,16 +23,18 @@ def run_email(event, context):
 
     cb.log_in()
 
-    tantrum_graph = cb.get_tantrum_graph()
+    cb.select_student(case)
 
-    rm_list = cb.get_recently_mastered()
+    tantrum_graph = cb.get_tantrum_graph(case)
 
-    tc_list = cb.get_trial_count()
+    rm_list = cb.get_recently_mastered(student_name)
+
+    tc_list = cb.get_trial_count(student_name)
 
     attachment_list = cb.get_attachments()
 
     if attachment_list:
-        send_email(current_date, recipients, attachment_list, rm_list, tc_list, tantrum_graph)
+        send_email(current_date, recipients, attachment_list, rm_list, tc_list, tantrum_graph, student_name)
 
     response = {
         "statusCode": 200

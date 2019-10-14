@@ -10,23 +10,24 @@ AWS_REGION = "us-east-1"
 CHARSET = "UTF-8"
 
 
-def send_email(current_date, recipients, attachment_list, rm_list, tc_list, tantrum_graph):
-    subject = current_date + " Evelyn's daily ABA therapy"
-    body_text = "Forms for " + current_date + " for Evelyn are attached"
+def send_email(current_date, recipients, attachment_list, rm_list, tc_list, tantrum_graph, student_name):
+    first_name = student_name.split()[0]
+    subject = current_date + " " + first_name + "'s daily ABA therapy"
+    body_text = "Forms for " + current_date + " for " + first_name + " are attached"
     body_html = f"""<html>
     <head></head>
     <body>
-    <h1>Evelyn's daily therapy</h1>
-    <p>Forms for {current_date} for Evelyn are attached</p>
+    <h1>{first_name}'s daily therapy</h1>
+    <p>Forms for {current_date} for {first_name} are attached</p>
     """
     if rm_list:
-        body_html += "<h2>Evelyn mastered something!</h2>"
+        body_html += "<h2>" + first_name + " mastered something!</h2>"
         body_html += "<ul>"
         for rm in rm_list:
             body_html += "<li>" + rm + "</li>"
         body_html += "</ul>"
     if tc_list:
-        body_html += "<h2>Some stuff Evelyn Worked on Today</h2>"
+        body_html += "<h2>Some stuff " + first_name + " Worked on Today</h2>"
         body_html += "<ul>"
         for tc in tc_list:
             body_html += "<li>" + tc + "</li>"
